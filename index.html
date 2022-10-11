@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>F22 213 ERP Experiment</title>
+		<script src="https://unpkg.com/jspsych@7.3.0"></script>
+		<script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@1.1.2"></script>
+		<script src="erp-sentence/index.js"></script>
+		<link href="https://unpkg.com/jspsych@7.3.0/css/jspsych.css" rel="stylesheet" type="text/css" />
+	</head>
+	<body></body>
+	<script>
+	  
+		/* initialize jsPsych */
+		var jsPsych = initJsPsych({ on_finish: function() { jsPsych.data.displayData(); } });
+		
+		/* create timeline */
+	    var timeline = [];
+		
+		/* welcome message */
+		var welcome = { type: jsPsychHtmlKeyboardResponse, stimulus: 
+			"Welcome, press any key to begin."
+		};
+		timeline.push(welcome);
+		
+		/* instructions */
+		var instructions = { type: jsPsychHtmlKeyboardResponse, stimulus: 
+			`<p> In this experiment things will happen. </p>
+			<p> Press any key to continue. </p>`,
+			post_trial_gap: 2000
+		};
+		timeline.push(instructions);
+		
+		var normal = { type: JsPsychERPSentence, stimulus: 
+			"Humans live on earth.",
+			index: 4
+		};
+		timeline.push(normal);
+		
+		/* start the experiment */
+	    jsPsych.run(timeline);
+		
+	</script>
+</html>
