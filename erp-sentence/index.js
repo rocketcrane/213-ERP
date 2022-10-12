@@ -36,6 +36,7 @@ var JsPsychERPSentence = (function (jspsych) {
     trial(display_element, trial) {
 		var wordArray = trial.stimulus.split(/\s/); //splits sentence by space character into an array of words
 		var word = '';
+		var data;
 		
 		/* display all words one-by-one */
 		for (let i = 0; i < wordArray.length; i++) {
@@ -51,15 +52,32 @@ var JsPsychERPSentence = (function (jspsych) {
 					console.log("oddball");
 				}
 			}
-			
 			/* wait for duration specified by delay parameter */
 			this.jsPsych.pluginAPI.setTimeout(function() {displayWord()}, time);
 		}
-				
-    	/* end trial */
+		
+		/* display */
+		
+    	/* keyboard response & end trial */
 		this.jsPsych.pluginAPI.setTimeout(function(){
-			this.jsPsych.finishTrial();
-		}, trial.delay * (wordArray.length + 1));
+			const after_key_response = (info) => {
+			    /* record the response time as data */
+			    let data = {
+			      rt: info.rt
+			    }
+			}
+		    /* set up a keyboard event to respond */
+		    this.jsPsych.pluginAPI.getKeyboardResponse({
+		      callback_function: after_key_response,
+		      valid_responses: ['f', 'j'],
+		      persist: false
+		    });
+		}, trial.delay * trial.index);
+		
+	    /* end trial */
+		this.jsPsych.pluginAPI.setTimeout(function(){
+	    	this.jsPsych.finishTrial(data);
+		}, trial.delay * wordArray.length);
     }
   }
   ERPSentencePlugin.info = info;
