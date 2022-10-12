@@ -36,16 +36,13 @@ var JsPsychERPSentence = (function (jspsych) {
     trial(display_element, trial) {
 		var wordArray = trial.stimulus.split(/\s/); //splits sentence by space character into an array of words
 		var word = '';
-		display_element.innerHTML = trial.stimulus;
-		console.log("now");
-		
 		
 		/* display all words one-by-one */
 		for (let i = 0; i < wordArray.length; i++) {
 			var num = i + 1;
 			var time = num * trial.delay;
 			
-			function displayWord(i) {
+			function displayWord() {
 				word = '<div>' + wordArray[i] + '</div>';
 				display_element.innerHTML = word;
 				
@@ -56,7 +53,7 @@ var JsPsychERPSentence = (function (jspsych) {
 			}
 			
 			/* wait for duration specified by delay parameter */
-			this.jsPsych.pluginAPI.setTimeout(displayWord(i), time);
+			this.jsPsych.pluginAPI.setTimeout(function() {displayWord()}, time);
 		}
 				
     	/* end trial */
