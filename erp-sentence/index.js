@@ -28,6 +28,10 @@ var JsPsychERPSentence = (function (jspsych) {
 				type: jspsych.ParameterType.BOOL,
 				default: undefined,
 			},
+			ERP_type: {
+				type: jspsych.ParameterType.HTML_STRING,
+				default: undefined,
+			},
 		},
 	};
 
@@ -53,7 +57,8 @@ var JsPsychERPSentence = (function (jspsych) {
 				key_pressed: 'NO_KEY',
 				correct: -9999,
 				sentence: 'NO_SENTENCE',
-				normal: -9999
+				normal: -9999,
+				ERP_type: 'unknown'
 		    }
 
 			/* display all words one-by-one */
@@ -88,6 +93,10 @@ var JsPsychERPSentence = (function (jspsych) {
 						}
 						data.sentence = trial.stimulus;
 						data.normal = trial.normal;
+						data.ERP_type = trial.ERP_type;
+						
+						/* end trial */
+						this.jsPsych.finishTrial(data);
 					}
 				    /* set up a keyboard event to respond */
 				    this.jsPsych.pluginAPI.getKeyboardResponse({
@@ -95,13 +104,8 @@ var JsPsychERPSentence = (function (jspsych) {
 				    	valid_responses: trial.choices,
 				    	persist: false
 				    });
-				}, trial.delay * trial.index);
-		
-		    /* end trial */
-			this.jsPsych.pluginAPI.setTimeout(
-				() => {
-		    		this.jsPsych.finishTrial(data);
-				}, trial.delay * (wordArray.length + 2)); //end trial only after last word has been displayed for time specified by delay variable
+				},
+			trial.delay * trial.index);
 		}
 	}
 	ERPSentencePlugin.info = info;

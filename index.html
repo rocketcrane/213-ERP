@@ -10,6 +10,19 @@
 	</head>
 	<body></body>
 	<script>
+		/* sentence options for N400 trials */
+		var N4 = [
+			["Whipped cream tastes ", "sweet", "anxious"],
+			["Crowded rooms are ", "noisy", "itchy"],
+			["The sky is ", "blue", "fat"]
+		];
+		
+		/* sentence options for P600 trials */
+		var P6 = [
+			["The dogs are ", "barking", "bark"],
+			["Little children should ", "play", "playing"],
+			["Fred dropped two ", "books", "book"]
+		];
 	  
 		/* initialize jsPsych */
 		const jsPsych = initJsPsych({ on_finish: function() { jsPsych.data.displayData(); } });
@@ -21,7 +34,8 @@
 		var subject_id = {
       		type: jsPsychSurveyText,
     		questions: [{
-          		prompt: "Please enter the subject ID as a two digit number, e.g., 05",
+          		prompt: `<p>Welcome to the ERP experiment for CogSci 213, Fall 2022.</p>
+				<p>Please enter the subject ID as a two digit number, e.g., 05</p>`,
         	},],
       	  	data: {
         		task: "subject_id",
@@ -40,7 +54,26 @@
 		var instructions = { type: jsPsychHtmlKeyboardResponse, stimulus: 
 			`<div style="width:600px;">
 			<p>
-			Sentences will appear word-by-word in the middle of the screen. 
+			Please look at the fixation cross in the middle of the screen when it appears.
+			</p>
+			<p>
+			Sentences will appear word-by-word in the middle of the screen. Please do not move your head or body while words are being displayed.
+			</p>
+			<p>
+			Your task is to determine whether the sentence is "okay" or not.
+			</p>
+			<p> Press the spacebar to continue. </p>`,
+			choices: [' '],
+			post_trial_gap: 2000
+		};
+		
+		/* practice instructions */
+		var practice_ins = { type: jsPsychHtmlKeyboardResponse, stimulus: 
+			`<div style="width:600px;">
+			<p>
+			You will now do a few practice trials. If you answer incorrectly, you'll repeat the practice until you get them correct.
+			</p>
+			<p>
 			Your task is to determine whether the sentence is "okay" or not.
 			</p>
 			<p> Press F for okay, J for not okay. </p>
@@ -49,53 +82,125 @@
 			post_trial_gap: 2000
 		};
 		
-		/* sentence options for N400 trials */
-		var N4 = [
-			["Whipped cream tastes ", "sweet", "anxious"],
-			["Crowded rooms are ", "noisy", "itchy"],
-			["The sky is ", "blue", "fat"]
+		/* practice loop instructions */
+/*		var practice_loop_ins = { type: jsPsychHtmlKeyboardResponse, stimulus: 
+			`<div style="width:600px;">
+			<p>
+			You answered one or more of the practice trials incorrectly. Let's try again!
+			</p>
+			<p>
+			You will now do a few practice trials.
+			</p>
+			<p>
+			Your task is to determine whether the sentence is "okay" or not.
+			</p>
+			<p> Remember, press F for okay, J for not okay. </p>
+			<p> Press the spacebar to continue. </p>`,
+			choices: [' '],
+			post_trial_gap: 2000
+		};
+*/		
+		/* pre-trial instructions */
+		var trial_ins = { type: jsPsychHtmlKeyboardResponse, stimulus: 
+			`<div style="width:600px;">
+			<p>
+			You will now begin the main experiment.
+			</p>
+			<p>
+			Remember, your task is to determine whether the sentence is "okay" or not.
+			</p>
+			<p> Press F for okay, J for not okay. </p>
+			<p> Press the spacebar to continue. </p>`,
+			choices: [' '],
+			post_trial_gap: 2000
+		};
+		
+		/* array of sentences for practice */
+		var practice_stimuli = [
+			{stimulus: "Tom runs very fast.", normal: true, ERP_type: "N4"},
+			{stimulus: "Tom runs very hamburger.", normal: false, ERP_type: "N4"},
+			{stimulus: "Humans eat to survive.", normal: true, ERP_type: "P6"},
+			{stimulus: "Humans eat to surviving.", normal: false, ERP_type: "P6"}
 		];
 		
-		/* sentence options for P600 trials */
-		var P6 = [
-			["The dogs are ", "barking", "bark"],
-			["Little children should ", "play", "playing"],
-			["Fred dropped two ", "books", "book"]
+		/* whether to loop practice trials or not */
+		var loop = false;
+		
+		/* practice trial */
+		var practice_trial = {
+		  	type: JsPsychERPSentence,
+		  	stimulus: jsPsych.timelineVariable('stimulus'),
+			normal: jsPsych.timelineVariable('normal'),
+		  	index: 4,
+			choices: ['f', 'j'],
+			normal_choice: ['f'],
+			delay: 500,
+			ERP_type: jsPsych.timelineVariable('ERP_type'),
+			on_finish: function(data) {
+				if (!data.correct) {
+					loop = true;
+				}
+			}
+		}
+		
+		/* add instructions to timeline before actual practice trials (needed since we're pushing the practice loop instruction to the timeline if participant answers practice questions incorrectly)*/
+/*		timeline = [
+		    subject_id,
+		    instructions,
+			practice_ins,
+			practice_loop
 		];
+*/		
+		/* block of practice trials */
+		var practice_loop = {
+			timeline: [fixation, practice_trial],
+			timeline_variables: practice_stimuli,
+			randomize_order: true,
+			loop_function: function(data) {
+				if (loop) {
+					loop = false; //reset loop variable, else we repeat practice trials forever
+					//timeline.push(practice_loop_ins); //NOT WORKING YET
+					return true;
+				} else {
+					return false;
+				}
+			}
+		}
 		
 		/* array of sentences to display */
-		var sentence_stimuli = [
-			//{stimulus: "Humans live on Earth.", normal: true},
-			//{stimulus: "Humans live on paper.", normal: false}
-		];
+		var sentence_stimuli = [];
 		
 		/* fill the sentence_stimuli array with randomized sentences */
 		for (let i = 0; i < N4.length; i++) { //N400
 			let j = Math.floor(Math.random() * 2) + 1;
 			sentence_stimuli.push({
 				stimulus: N4[i][0]+N4[i][j]+".", 
-				normal: Boolean(j == 1)});
+				normal: Boolean(j == 1),
+				ERP_type: "N4"});
 		}
 		for (let i = 0; i < P6.length; i++) { //P600
 			let j = Math.floor(Math.random() * 2) + 1;
 			sentence_stimuli.push({
 				stimulus: P6[i][0]+P6[i][j]+".", 
-				normal: Boolean(j == 1)});
+				normal: Boolean(j == 1),
+				ERP_type: "P6"});
 		}
 		
 		/* sentence display trial */
-		var sentences = {
+		var sentence_trial = {
 		  	type: JsPsychERPSentence,
 		  	stimulus: jsPsych.timelineVariable('stimulus'),
 			normal: jsPsych.timelineVariable('normal'),
 		  	index: 4,
 			choices: ['f', 'j'],
-			normal_choice: ['f']
+			normal_choice: ['f'],
+			delay: 500,
+			ERP_type: jsPsych.timelineVariable('ERP_type')
 		}
 		
 		/* block of sentence trials */
 		var sentence_block = {
-			timeline: [fixation, sentences],
+			timeline: [fixation, sentence_trial],
 			timeline_variables: sentence_stimuli,
 			randomize_order: true
 		}
@@ -104,6 +209,9 @@
 		jsPsych.run([
 		    subject_id,
 		    instructions,
+			practice_ins,
+			practice_loop,
+			trial_ins,
 			sentence_block
 		]);
 		
