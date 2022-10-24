@@ -4,6 +4,7 @@
 		<title>F22 213 ERP Experiment</title>
 		<script src="https://unpkg.com/jspsych@7.3.0"></script>
 		<script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@1.1.2"></script>
+	    <script src="https://unpkg.com/@jspsych/plugin-survey-text@1.1.0"></script>
 		<script src="erp-sentence/index.js"></script>
 		<link href="https://unpkg.com/jspsych@7.3.0/css/jspsych.css" rel="stylesheet" type="text/css" />
 	</head>
@@ -11,39 +12,100 @@
 	<script>
 	  
 		/* initialize jsPsych */
-		var jsPsych = initJsPsych({ on_finish: function() { jsPsych.data.displayData(); } });
+		const jsPsych = initJsPsych({ on_finish: function() { jsPsych.data.displayData(); } });
 		
 		/* create timeline */
 	    var timeline = [];
 		
-		/* welcome message */
-		var welcome = { type: jsPsychHtmlKeyboardResponse, stimulus: 
-			"Welcome, press any key to begin."
+		/* collect subject ID */
+		var subject_id = {
+      		type: jsPsychSurveyText,
+    		questions: [{
+          		prompt: "Please enter the subject ID as a two digit number, e.g., 05",
+        	},],
+      	  	data: {
+        		task: "subject_id",
+      	  	},
+    	};
+		
+		/* fixation cross */
+		var fixation = {
+		  type: jsPsychHtmlKeyboardResponse,
+		  stimulus: '<div style="font-size:60px;">+</div>',
+		  choices: "NO_KEYS",
+		  trial_duration: 1000,
 		};
-		timeline.push(welcome);
 		
 		/* instructions */
 		var instructions = { type: jsPsychHtmlKeyboardResponse, stimulus: 
-			`<p> In this experiment things will happen. </p>
-			<p> Press any key to continue. </p>`,
+			`<div style="width:600px;">
+			<p>
+			Sentences will appear word-by-word in the middle of the screen. 
+			Your task is to determine whether the sentence is "okay" or not.
+			</p>
+			<p> Press F for okay, J for not okay. </p>
+			<p> Press the spacebar to continue. </p>`,
+			choices: [' '],
 			post_trial_gap: 2000
 		};
-		timeline.push(instructions);
 		
-		var normal = { type: JsPsychERPSentence, stimulus: 
-			"Humans live on Earth.",
-			index: 4
-		};
-		timeline.push(normal);
+		/* sentence options for N400 trials */
+		var N4 = [
+			["Whipped cream tastes ", "sweet", "anxious"],
+			["Crowded rooms are ", "noisy", "itchy"],
+			["The sky is ", "blue", "fat"]
+		];
 		
-		var oddball = { type: JsPsychERPSentence, stimulus: 
-			"Humans live on paper.",
-			index: 4
-		};
-		timeline.push(oddball);
+		/* sentence options for P600 trials */
+		var P6 = [
+			["The dogs are ", "barking", "bark"],
+			["Little children should ", "play", "playing"],
+			["Fred dropped two ", "books", "book"]
+		];
+		
+		/* array of sentences to display */
+		var sentence_stimuli = [
+			//{stimulus: "Humans live on Earth.", normal: true},
+			//{stimulus: "Humans live on paper.", normal: false}
+		];
+		
+		/* fill the sentence_stimuli array with randomized sentences */
+		for (let i = 0; i < N4.length; i++) { //N400
+			let j = Math.floor(Math.random() * 2) + 1;
+			sentence_stimuli.push({
+				stimulus: N4[i][0]+N4[i][j]+".", 
+				normal: Boolean(j == 1)});
+		}
+		for (let i = 0; i < P6.length; i++) { //P600
+			let j = Math.floor(Math.random() * 2) + 1;
+			sentence_stimuli.push({
+				stimulus: P6[i][0]+P6[i][j]+".", 
+				normal: Boolean(j == 1)});
+		}
+		
+		/* sentence display trial */
+		var sentences = {
+		  	type: JsPsychERPSentence,
+		  	stimulus: jsPsych.timelineVariable('stimulus'),
+			normal: jsPsych.timelineVariable('normal'),
+		  	index: 4,
+			choices: ['f', 'j'],
+			normal_choice: ['f']
+		}
+		
+		/* block of sentence trials */
+		var sentence_block = {
+			timeline: [fixation, sentences],
+			timeline_variables: sentence_stimuli,
+			randomize_order: true
+		}
 		
 		/* start the experiment */
-	    jsPsych.run(timeline);
+		jsPsych.run([
+		    subject_id,
+		    instructions,
+			sentence_block
+		]);
 		
 	</script>
 </html>

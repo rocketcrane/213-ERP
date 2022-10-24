@@ -16,6 +16,18 @@ var JsPsychERPSentence = (function (jspsych) {
 		  	  	type: jspsych.ParameterType.INT,
 		   	 	default: undefined,
 		  	},
+			choices: {
+				type: jspsych.ParameterType.KEYS,
+				default: undefined,
+			},
+			normal_choice: {
+				type: jspsych.ParameterType.KEYS,
+				default: undefined,
+			},
+			normal: {
+				type: jspsych.ParameterType.BOOL,
+				default: undefined,
+			},
 		},
 	};
 
@@ -37,7 +49,11 @@ var JsPsychERPSentence = (function (jspsych) {
 			var wordArray = trial.stimulus.split(/\s/); //splits sentence by space character into an array of words
 			var word = '';
 		    var data = {
-		    	rt: -99999
+		    	rt: -9999,
+				key_pressed: 'NO_KEY',
+				correct: -9999,
+				sentence: 'NO_SENTENCE',
+				normal: -9999
 		    }
 
 			/* display all words one-by-one */
@@ -45,7 +61,7 @@ var JsPsychERPSentence = (function (jspsych) {
 								
 				/* wrap word display in a function to run using timeout */
 				function displayWord() {
-					word = '<div>' + wordArray[i] + '</div>'; //html formatting
+					word = '<div style="font-size:60px;">' + wordArray[i] + '</div>'; //html formatting
 					display_element.innerHTML = word; //display the word
 		
 					/* trigger handler at the oddball word */
@@ -59,23 +75,33 @@ var JsPsychERPSentence = (function (jspsych) {
 			}
 			
 			/* keyboard response & end trial */
-			this.jsPsych.pluginAPI.setTimeout(function(){
-				const after_key_response = (info) => {
-				    /* record the response time */
-				    data.rt = info.rt;
-				}
-			    /* set up a keyboard event to respond */
-			    this.jsPsych.pluginAPI.getKeyboardResponse({
-			    	callback_function: after_key_response,
-			    	valid_responses: ['f', 'j'], //WORK IN PROGRESS: only F and J responses accepted for now
-			    	persist: false
-			    });
-			}, trial.delay * trial.index);
+			this.jsPsych.pluginAPI.setTimeout(
+				() => { //see "migrating to JSPsych v7"
+					const after_key_response = (info) => {
+					    /* record the response time */
+					    data.rt = info.rt;
+						data.key_pressed = info.key;
+						if (trial.normal) { //normal sentence
+							data.correct = (info.key == trial.normal_choice);
+						} else { //anomalous sentence
+							data.correct = (info.key != trial.normal_choice);
+						}
+						data.sentence = trial.stimulus;
+						data.normal = trial.normal;
+					}
+				    /* set up a keyboard event to respond */
+				    this.jsPsych.pluginAPI.getKeyboardResponse({
+				    	callback_function: after_key_response,
+				    	valid_responses: trial.choices,
+				    	persist: false
+				    });
+				}, trial.delay * trial.index);
 		
 		    /* end trial */
-			this.jsPsych.pluginAPI.setTimeout(function(){
-		    	this.jsPsych.finishTrial(data);
-			}, trial.delay * (wordArray.length + 1)); //end trial only after last word has been displayed for time specified by delay variable
+			this.jsPsych.pluginAPI.setTimeout(
+				() => {
+		    		this.jsPsych.finishTrial(data);
+				}, trial.delay * (wordArray.length + 2)); //end trial only after last word has been displayed for time specified by delay variable
 		}
 	}
 	ERPSentencePlugin.info = info;
