@@ -64,7 +64,7 @@
 			</p>
 			<p> Press the spacebar to continue. </p>`,
 			choices: [' '],
-			post_trial_gap: 2000
+			post_trial_gap: 1000
 		};
 		
 		/* practice instructions */
@@ -79,14 +79,17 @@
 			<p> Press F for okay, J for not okay. </p>
 			<p> Press the spacebar to continue. </p>`,
 			choices: [' '],
-			post_trial_gap: 2000
+			post_trial_gap: 1000
 		};
 		
+		/* keeps track of whether the practice trials have been answered correctly */
+		var loop = false;
+		
 		/* practice loop instructions */
-/*		var practice_loop_ins = { type: jsPsychHtmlKeyboardResponse, stimulus: 
+		var practice_loop_ins = { type: jsPsychHtmlKeyboardResponse, stimulus: 
 			`<div style="width:600px;">
 			<p>
-			You answered one or more of the practice trials incorrectly. Let's try again!
+			You answered one of the practice trials incorrectly. Let's try again!
 			</p>
 			<p>
 			You will now do a few practice trials.
@@ -97,9 +100,23 @@
 			<p> Remember, press F for okay, J for not okay. </p>
 			<p> Press the spacebar to continue. </p>`,
 			choices: [' '],
-			post_trial_gap: 2000
+			post_trial_gap: 1000,
 		};
-*/		
+		
+		/* conditional timeline for practice loop instructions */
+		var if_node_ins = {
+			timeline: [practice_loop_ins],
+			conditional_function: function(){
+				//console.log("running practice_loop_ins, loop is " + loop); //DEBUG
+				if (loop) {
+					loop = false; //reset loop variable, else we repeat practice trials forever
+					return true;
+				} else {
+					return false;
+				}
+			}
+		}
+		
 		/* pre-trial instructions */
 		var trial_ins = { type: jsPsychHtmlKeyboardResponse, stimulus: 
 			`<div style="width:600px;">
@@ -112,7 +129,7 @@
 			<p> Press F for okay, J for not okay. </p>
 			<p> Press the spacebar to continue. </p>`,
 			choices: [' '],
-			post_trial_gap: 2000
+			post_trial_gap: 1000
 		};
 		
 		/* array of sentences for practice */
@@ -122,9 +139,6 @@
 			{stimulus: "Humans eat to survive.", normal: true, ERP_type: "P6"},
 			{stimulus: "Humans eat to surviving.", normal: false, ERP_type: "P6"}
 		];
-		
-		/* whether to loop practice trials or not */
-		var loop = false;
 		
 		/* practice trial */
 		var practice_trial = {
@@ -143,23 +157,13 @@
 			}
 		}
 		
-		/* add instructions to timeline before actual practice trials (needed since we're pushing the practice loop instruction to the timeline if participant answers practice questions incorrectly)*/
-/*		timeline = [
-		    subject_id,
-		    instructions,
-			practice_ins,
-			practice_loop
-		];
-*/		
 		/* block of practice trials */
 		var practice_loop = {
-			timeline: [fixation, practice_trial],
+			timeline: [if_node_ins, fixation, practice_trial],
 			timeline_variables: practice_stimuli,
 			randomize_order: true,
 			loop_function: function(data) {
 				if (loop) {
-					loop = false; //reset loop variable, else we repeat practice trials forever
-					//timeline.push(practice_loop_ins); //NOT WORKING YET
 					return true;
 				} else {
 					return false;
@@ -205,15 +209,18 @@
 			randomize_order: true
 		}
 		
-		/* start the experiment */
-		jsPsych.run([
+		/* set up timeline */
+		timeline = [
 		    subject_id,
 		    instructions,
 			practice_ins,
 			practice_loop,
 			trial_ins,
 			sentence_block
-		]);
+		];
+		
+		/* start the experiment */
+		jsPsych.run(timeline);
 		
 	</script>
 </html>
