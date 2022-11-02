@@ -71,8 +71,11 @@ var JsPsychERPSentence = (function (jspsych) {
 		
 					/* trigger handler at the oddball word */
 					if ((i + 1) == trial.index) {
-						//WORK IN PROGRESS: fetch(`http://127.0.0.1:8000/trigger/tcp/${jsPsych.timelineVariable("trigger_value")}`);
-						console.log("trigger");
+						/* trigger values: 1 = N4, 2 = P6 */
+						//console.log(trial.ERP_type);
+						var trig = (trial.ERP_type === "N4") ? 1 : 2;
+ 					   	//fetch(`http://127.0.0.1:8000/trigger/tcp/${trig}`);
+						console.log(trig);
 					}
 				}
 				/* wait for duration specified by delay parameter */

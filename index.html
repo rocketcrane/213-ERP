@@ -175,7 +175,7 @@
 		  	on_load: () => {
 				var local_data = jsPsych.data.getDataByTimelineNode('0.0-0.0');
 				var id = local_data.trials[0].response.Q0;
-				console.log(id);
+				//console.log(id);
 		  		jsPsych.data.get().localSave('csv',`${id}.csv`);
 			},
 		};
