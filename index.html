@@ -14,14 +14,20 @@
 		var N4 = [
 			["Whipped cream tastes ", "sweet", "anxious"],
 			["Crowded rooms are ", "noisy", "itchy"],
-			["The sky is ", "blue", "fat"]
+			["The sky is ", "blue", "fat"],
+			["Nervous people are ", "anxious", "sweet"],
+			["Smelly feet are ", "itchy", "noisy"],
+			["Pandas are often ", "fat", "blue"]
 		];
 		
 		/* sentence options for P600 trials */
 		var P6 = [
 			["The dogs are ", "barking", "bark"],
 			["Little children should ", "play", "playing"],
-			["Fred dropped two ", "books", "book"]
+			["Fred dropped two ", "books", "book"],
+			["My dog doesn't ", "bark", "barking"],
+			["Your brother is ", "playing", "play"],
+			["She took a ", "book", "books"]
 		];
 	  
 		/* initialize jsPsych */
@@ -48,16 +54,19 @@
 		  stimulus: '<div style="font-size:60px;">+</div>',
 		  choices: "NO_KEYS",
 		  trial_duration: 1000,
+      	  data: {
+        		task: "fixation",
+      	  },
 		};
 		
 		/* instructions */
 		var instructions = { type: jsPsychHtmlKeyboardResponse, stimulus: 
-			`<div style="width:600px;">
+			`<div style="width:800px;">
 			<p>
 			Please look at the fixation cross in the middle of the screen when it appears.
 			</p>
 			<p>
-			Sentences will appear word-by-word in the middle of the screen. Please do not move your head or body while words are being displayed.
+			Four-word sentences will appear word-by-word in the middle of the screen.
 			</p>
 			<p>
 			Your task is to determine whether the sentence is "okay" or not.
@@ -69,14 +78,23 @@
 		
 		/* practice instructions */
 		var practice_ins = { type: jsPsychHtmlKeyboardResponse, stimulus: 
-			`<div style="width:600px;">
+			`<div style="width:800px;">
 			<p>
-			You will now do a few practice trials. If you answer incorrectly, you'll repeat the practice until you get them correct.
+			You will now do a few practice trials.
 			</p>
 			<p>
-			Your task is to determine whether the sentence is "okay" or not.
+			Remember, you will see four-word sentences one word at a time, and your task is to determine whether the four-word sentence is "okay" or not.
 			</p>
-			<p> Press F for okay, J for not okay. </p>
+			<p>
+			Example 1: "Cats have four legs." is okay, "Cats have four dolphins." is not okay.
+			</p>
+			<p>
+			Example 2: "The big cat sleeps." is okay, "The big cat sleeping." is not okay.
+			</p>
+			<p> <em>When the last word in the sentence appears</em>, press F for okay or J for not okay. </p>
+			<p> For the sentences above, you would press "F" when you see "legs" and "sleeps", and "J" when you see "dolphins" and "sleeping" 
+			</p>
+			<p> Please respond as quickly as possible while being accurate. </p>
 			<p> Press the spacebar to continue. </p>`,
 			choices: [' '],
 			post_trial_gap: 1000
@@ -87,17 +105,23 @@
 		
 		/* practice loop instructions */
 		var practice_loop_ins = { type: jsPsychHtmlKeyboardResponse, stimulus: 
-			`<div style="width:600px;">
+			`<div style="width:800px;">
 			<p>
 			You answered one of the practice trials incorrectly. Let's try again!
 			</p>
 			<p>
-			You will now do a few practice trials.
+			Remember, you will see four-word sentences one word at a time, and your task is to determine whether the four-word sentence is "okay" or not.
 			</p>
 			<p>
-			Your task is to determine whether the sentence is "okay" or not.
+			Example 1: "Cats have four legs." is okay, "Cats have four dolphins." is not okay.
 			</p>
-			<p> Remember, press F for okay, J for not okay. </p>
+			<p>
+			Example 2: "The big cat sleeps." is okay, "The big cat sleeping." is not okay.
+			</p>
+			<p> When the last word in the sentence appears, press F for okay or J for not okay. </p>
+			<p> For the sentences above, you would press "F" when you see "legs." or "sleeps.", and "J" when you see "dolphins." or "sleeping."
+			</p>
+			<p> Please respond as quickly as possible while being accurate. </p>
 			<p> Press the spacebar to continue. </p>`,
 			choices: [' '],
 			post_trial_gap: 1000,
@@ -124,12 +148,30 @@
 			You will now begin the main experiment.
 			</p>
 			<p>
-			Remember, your task is to determine whether the sentence is "okay" or not.
+			Remember, your task is to determine whether the four-word sentence is "okay" or not.
 			</p>
-			<p> Press F for okay, J for not okay. </p>
+			<p> When the last word in the sentence appears, press F for okay or J for not okay. </p>
+			<p> Please respond as quickly as possible while being accurate. </p>
 			<p> Press the spacebar to continue. </p>`,
 			choices: [' '],
 			post_trial_gap: 1000
+		};
+		
+		/* debrief */
+		var debrief_block = {
+		  type: jsPsychHtmlKeyboardResponse,
+		  stimulus: function() {
+
+		    var trials = jsPsych.data.get().filter({task: 'response'});
+		    var correct_trials = trials.filter({correct: true});
+		    var accuracy = Math.round(correct_trials.count() / trials.count() * 100);
+		    var rt = Math.round(correct_trials.select('rt').mean());
+
+		    return `<p>You responded correctly on ${accuracy}% of the trials.</p>
+		      <p>Your average response time was ${rt}ms.</p>
+		      <p>Press any key to complete the experiment. Thank you!</p>`;
+
+		  }
 		};
 		
 		/* array of sentences for practice */
@@ -199,7 +241,10 @@
 			choices: ['f', 'j'],
 			normal_choice: ['f'],
 			delay: 500,
-			ERP_type: jsPsych.timelineVariable('ERP_type')
+			ERP_type: jsPsych.timelineVariable('ERP_type'),
+      	  	data: {
+        		task: "response",
+      	  	},
 		}
 		
 		/* block of sentence trials */
@@ -216,7 +261,8 @@
 			practice_ins,
 			practice_loop,
 			trial_ins,
-			sentence_block
+			sentence_block,
+			debrief_block
 		];
 		
 		/* start the experiment */
