@@ -12,7 +12,7 @@ var JsPsychERPSentence = (function (jspsych) {
 		    	type: jspsych.ParameterType.INT,
 		    	default: 1000,
 		  	},
-		  	index: { //index begins at 1, not 0
+		  	index: { //index begins at 1, not 0, decides which word to collect ERP data from
 		  	  	type: jspsych.ParameterType.INT,
 		   	 	default: undefined,
 		  	},
@@ -71,10 +71,11 @@ var JsPsychERPSentence = (function (jspsych) {
 		
 					/* trigger handler at the oddball word */
 					if ((i + 1) == trial.index) {
-						/* trigger values: 1 = N4, 2 = P6 */
-						//console.log(trial.ERP_type);
+						/* trigger values: 11 = N4 normal, 21 = P6 normal, 12 = N4 odd, 22 = P6 odd */
 						var trig = (trial.ERP_type === "N4") ? 1 : 2;
- 					   	//fetch(`http://127.0.0.1:8000/trigger/tcp/${trig}`);
+						/* use type casting to append information about normalacy to trigger value */
+						trig = Number(String(trig) + String((trial.normal === true) ? 1 : 2));
+ 					   	fetch(`http://127.0.0.1:8000/trigger/tcp/${trig}`);
 						console.log(trig);
 					}
 				}
@@ -82,9 +83,16 @@ var JsPsychERPSentence = (function (jspsych) {
 				this.jsPsych.pluginAPI.setTimeout(function() {displayWord()}, (i + 1) * trial.delay);
 			}
 			
-			/* keyboard response & end trial */
+			/* ask is sentence okay, keyboard response & end trial */
 			this.jsPsych.pluginAPI.setTimeout(
 				() => { //see "migrating to JSPsych v7"
+					/* display sentence okay trial */
+					var okay = `<div style="font-size:30px;"> 
+								<p> Is the sentence okay? </p> 
+								<p> F for okay, J for not okay. </p> 
+								</div>`;
+					display_element.innerHTML = okay;
+		
 					const after_key_response = (info) => {
 					    /* record the response time */
 					    data.rt = info.rt;
@@ -108,7 +116,7 @@ var JsPsychERPSentence = (function (jspsych) {
 				    	persist: false
 				    });
 				},
-			trial.delay * trial.index);
+			trial.delay * (trial.index + 1));
 		}
 	}
 	ERPSentencePlugin.info = info;
