@@ -10,6 +10,91 @@
 	</head>
 	<body></body>
 	<script>
+/*		var test = [
+			["The dogs are ", "barking", "bark"],
+			["My dog doesn't ", "bark", "barking"],
+
+			["Little children should ", "play", "playing"],
+			["Your brother is ", "playing", "play"],
+
+			["Fred dropped two ", "books", "book"],
+			["She took a ", "book", "books"],
+
+			["I purchased three ", "tickets", "ticket"],
+			["There remained one ", "ticket", "tickets"],
+
+			["Don't forget to ", "smile", "smiling"],
+			["The boys were ", "smiling", "smile"],
+
+			["Herbert listened while ", "running", "ran"],
+			["Sputtering, the engine ", "ran", "running"],
+
+			["Bakeries don't sell ", "vehicles", "vehicle"],
+			["That's an electric ", "vehicle", "vehicles"],
+
+			["There's an energy ", "shortage", "shortages"],
+			["Bookkeepers noticed supply ", "shortages", "shortage"],
+
+			["The miscreants had ", "loitered", "loitering"],
+			["This hotel forbade ", "loitering", "loitered"],
+
+			["They all brought ", "pencils", "pencil"],
+			["Sue borrowed a ", "pencil", "pencils"],
+
+			["My wife will ", "complain", "complains"]
+			["Jeffery's milkman never ", "complains", "complain"],
+
+			["Bipeds have two ", "legs", "leg"],
+			["I'll examine that ", "leg", "legs"],
+
+			["The burglar tiptoed ", "quietly", "quiet"],
+			["Cities are rarely ", "quiet", "quietly"],
+
+			["Dan ordered a ", "beer", "beers"],
+			["He downed four ", "beers", "beer"],
+
+			["It failed to ", "explode", "exploding"],
+			["Our sales are ", "exploding", "explode"],
+
+			["Nonconformists seemingly cannot ", "compromise", "compromised"],
+			["The swindler reluctantly ", "compromised", "compromise"],
+
+			["Online, reviews were ", "terrible", "terribly"],
+			["Ultimately, it aged ", "terribly", "terrible"],
+
+			["Organ donors must ", "volunteer", "volunteering"],
+			["Richard went out ", "volunteering", "volunteer"],
+
+			["The sprawl stretched ", "miles", "mile"],
+			["Beth ran a ", "mile", "miles"],
+
+			["Kimberly detected an ", "imbalance", "imbalanced"],
+			["Your messaging is ", "imbalanced", "imbalance"],
+
+			["Persuasive communication can ", "unite", "united"],
+			["The people were ", "united", "unite"],
+
+			["Bazaars have many ", "items", "item" ],
+			["It's a hot ", "item", "items"],
+
+			["The secretary is ", "typing", "typed"],
+			["The book was ", "typed", "typing"],
+
+			["Abbreviations typically help ", "simplify", "simplifying"],
+			["Refinement processes are ", "simplifying", "simplify"],
+
+			["Scholars often discuss ", "researching", "researches"],
+			["The autodidact also ", "researches", "researching"]
+			
+			
+		];
+		for (let i = 0; i < test.length; i++) {
+			test[i][1] = test[i][2];
+			test[i][2] = 0;
+			console.log(test[i]);
+		}
+*/
+		
 		/* list 1 for N400 trials, 0 bad, 1 good*/
 		var N4A = [
 			["Whipped cream tastes ", "sweet", 1],
@@ -17,7 +102,51 @@
 			["Crowded rooms are ", "itchy", 0],
 			["Smelly feet are ", "noisy", 0],
 			["The sky is ", "blue", 1],
-			["Pandas are often ", "fat", 1]
+			["Pandas are often ", "fat", 1],
+			["Leaving home is ", "tasty", 0],
+			["Potato chips are ", "sad", 0],
+			["I rest on ", "weekends", 1],
+			["Swamps sometimes have ", "alligators", 1],
+			["Grandma broke her ", "mustache", 0],
+			["Fred combed his ", "hip", 0],
+			["Kenny watered his ", "flowers", 1],
+			["Jobs earn people ", "money", 1],
+			["Leave the door ", "terrified", 0],
+			["Jenny screamed, feeling ", "open", 0],
+			["Cliffs can be ", "steep", 1],
+			["Their politics were ", "liberal", 1],
+			["I own two ", "questions", 0],
+			["Reporters ask many ", "houses", 0],
+			["The atmosphere felt ", "unwelcoming", 1],
+			["Her hair was ", "brown", 1],
+			["The sign pointed ", "delicious", 0],
+			["Suzanne's casserole tastes ", "left", 0],
+			["The researcher was ", "famous", 1],
+			["Stop signs are ", "octagonal,", 1],
+			["Infants will often ", "pollinate", 0],
+			["Worker bees can ", "cry", 0],
+			["Vegans dislike exploiting ", "animals", 1],
+			["He dislikes cellular ", "telephones", 1],
+			["Athletes generally train ", "humorously", 0],
+			["Comedy is received ", "dutifully", 0],
+			["Alex taught their ", "students", 1],
+			["Many pantries contain ", "flour", 1],
+			["Respect isn't easily ", "churned", 0],
+			["Butter must be ", "earned", 0],
+			["The pizza is ", "scrumptious", 1],
+			["Most viruses are ", "contagious", 1],
+			["Mystics are often ", "improvised", 0],
+			["While practicing, actors ", "distrusted", 0],
+			["The hunchback glanced ", "longingly", 1],
+			["Some trains levitate ", "magnetically", 1],
+			["He wore his ", "lake", 0],
+			["Pollutants clouded the ", "scarf", 0],
+			["Sports cars are ", "decadent", 1],
+			["Jeremy's shoulder was ", "dislocated", 1],
+			["Spoiled milk smells ", "mathematical", 0],
+			["All proofs are ", "putrid", 0],
+			["The chair was ", "refurbished", 1],
+			["His motion appeared ", "fluid", 1]
 		];
 		
 		/* list 2 for N400 trials */
@@ -27,8 +156,56 @@
 			["Crowded rooms are ", "noisy", 1],
 			["Smelly feet are ", "itchy", 1],
 			["The sky is ", "fat", 0],
-			["Pandas are often ", "blue", 0]
+			["Pandas are often ", "blue", 0],
+			["Leaving home is ", "sad", 1],
+			["Potato chips are ", "tasty", 1],
+			["I rest on ", "alligators", 0],
+			["Swamps sometimes have ", "weekends", 0],
+			["Grandma broke her ", "hip", 1],
+			["Fred combed his ", "mustache", 1],
+			["Kenny watered his ", "money", 0],
+			["Jobs earn people ", "flowers", 0],
+			["Leave the door ", "open", 1],
+			["Jenny screamed, feeling ", "terrified", 1],
+			["Cliffs can be ", "liberal", 0],
+			["Their politics were ", "steep", 0],
+			["I own two ", "houses", 1],
+			["Reporters ask many ", "questions", 1],
+			["The atmosphere felt ", "brown", 0],
+			["Her hair was ", "unwelcoming", 0],
+			["The sign pointed ", "left", 1],
+			["Suzanne's casserole tastes ", "delicious", 1],
+			["The researcher was ", "octagonal", 0],
+			["Stop signs are ", "famous", 0],
+			["Infants will often ", "cry", 1],
+			["Worker bees can ", "pollinate", 1],
+			["Vegans dislike exploiting ", "telephones", 0],
+			["He dislikes cellular ", "animals", 0],
+			["Athletes generally train ", "dutifully", 1],
+			["Comedy is received ", "humorously", 1],
+			["Alex taught their ", "flour", 0],
+			["Many pantries contain ", "students", 0],
+			["Respect isn't easily ", "earned", 1],
+			["Butter must be ", "churned", 1],
+			["The pizza is ", "contagious", 0],
+			["Most viruses are ", "scrumptious", 0],
+			["Mystics are often ", "distrusted", 1],
+			["While practicing, actors ", "improvised", 1],
+			["The hunchback glanced ", "magnetically", 0],
+			["Some trains levitate ", "longingly", 0],
+			["He wore his ", "scarf", 1],
+			["Pollutants clouded the ", "lake", 1],
+			["Sports cars are ", "dislocated", 0],
+			["Jeremy's shoulder was ", "decadent", 0],
+			["Spoiled milk smells ", "putrid", 1],
+			["All proofs are ", "mathematical", 1],
+			["The chair was ", "fluid", 0],
+			["His motion appeared ", "refurbished", 0]
 		];
+		
+		/* make sure both lists are same length */
+		console.log("N4A Length is ", N4A.length);
+		console.log("N4B Length is ", N4B.length);
 		
 		/* list 1 for P600 trials */
 		var P6A = [
@@ -37,7 +214,21 @@
 			["Little children should ", "playing", 0],
 			["Your brother is ", "play", 0],
 			["Fred dropped two ", "books", 1],
-			["She took a ", "book", 1]
+			["She took a ", "book", 1],
+			["I purchased three ", "ticket", 0],
+			["There remained one ", "tickets", 0],
+			["Don't forget to ", "smile", 1],
+			["The boys were ", "smiling", 1],
+			["Herbert listened while ", "ran", 0],
+			["Sputtering, the engine ", "running", 0],
+			["Bakeries don't sell ", "vehicles", 1],
+			["That's an electric ", "vehicle", 1],
+			["There's an energy ", "shortages", 0],
+			["Bookkeepers noticed supply ", "shortage", 0],
+			["The miscreants had ", "loitered", 1],
+			["This hotel forbade ", "loitering", 1],
+			["They all brought ", "pencil", 0],
+			["Sue borrowed a ", "pencils", 0]
 		];
 		
 		/* list 2 for P600 trials */
@@ -47,8 +238,26 @@
 			["Little children should ", "play", 1],
 			["Your brother is ", "playing", 1],
 			["Fred dropped two ", "book", 0],
-			["She took a ", "books", 0]
+			["She took a ", "books", 0],
+			["I purchased three ", "tickets", 1],
+			["There remained one ", "ticket", 1],
+			["Don't forget to ", "smiling", 0],
+			["The boys were ", "smile", 0],
+			["Herbert listened while ", "running", 1],
+			["Sputtering, the engine ", "ran", 1],
+			["Bakeries don't sell ", "vehicle", 0],
+			["That's an electric ", "vehicles", 0],
+			["There's an energy ", "shortage", 1],
+			["Bookkeepers noticed supply ", "shortages", 1],
+			["The miscreants had ", "loitering", 0],
+			["This hotel forbade ", "loitered", 0],
+			["They all brought ", "pencils", 1],
+			["Sue borrowed a ", "pencil", 1]
 		];
+		
+		/* make sure both lists are same length */
+		console.log("P6A Length is ", P6A.length);
+		console.log("P6B Length is ", P6B.length);
 	  
 		/* initialize jsPsych */
 		const jsPsych = initJsPsych({ on_finish: function() { jsPsych.data.displayData(); } });
@@ -228,11 +437,11 @@
 		/* array of sentences to display */
 		var sentence_stimuli = [];
 		
-		/* fill the sentence_stimuli array with randomized sentences */
+		/* fill the sentence_stimuli array */
 		var N4 = Math.random() < 0.5 ? N4A : N4B;
 		var P6 = Math.random() < 0.5 ? P6A : P6B;
-		console.log(["using N4A?", N4 === N4A]);
-		console.log(["using P6A?", P6 === P6A]);
+		console.log("using N4A? ", N4 === N4A);
+		console.log("using P6A? ", P6 === P6A);
 		
 		for (let i = 0; i < N4.length; i++) {
 			sentence_stimuli.push({
@@ -249,6 +458,7 @@
 			});
 		}
 		
+		/* unused code to fill sentence_stimuli array with completely randomized sentences */
 /*		for (let i = 0; i < N4.length; i++) { //N400
 			let j = Math.floor(Math.random() * 2) + 1;
 			sentence_stimuli.push({
