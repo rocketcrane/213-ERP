@@ -10,24 +10,44 @@
 	</head>
 	<body></body>
 	<script>
-		/* sentence options for N400 trials */
-		var N4 = [
-			["Whipped cream tastes ", "sweet", "anxious"],
-			["Crowded rooms are ", "noisy", "itchy"],
-			["The sky is ", "blue", "fat"],
-			["Nervous people are ", "anxious", "sweet"],
-			["Smelly feet are ", "itchy", "noisy"],
-			["Pandas are often ", "fat", "blue"]
+		/* list 1 for N400 trials, 0 bad, 1 good*/
+		var N4A = [
+			["Whipped cream tastes ", "sweet", 1],
+			["Nervous people are ", "anxious", 1],
+			["Crowded rooms are ", "itchy", 0],
+			["Smelly feet are ", "noisy", 0],
+			["The sky is ", "blue", 1],
+			["Pandas are often ", "fat", 1]
 		];
 		
-		/* sentence options for P600 trials */
-		var P6 = [
-			["The dogs are ", "barking", "bark"],
-			["Little children should ", "play", "playing"],
-			["Fred dropped two ", "books", "book"],
-			["My dog doesn't ", "bark", "barking"],
-			["Your brother is ", "playing", "play"],
-			["She took a ", "book", "books"]
+		/* list 2 for N400 trials */
+		var N4B = [
+			["Whipped cream tastes ", "anxious", 0],
+			["Nervous people are ", "sweet", 0],
+			["Crowded rooms are ", "noisy", 1],
+			["Smelly feet are ", "itchy", 1],
+			["The sky is ", "fat", 0],
+			["Pandas are often ", "blue", 0]
+		];
+		
+		/* list 1 for P600 trials */
+		var P6A = [
+			["The dogs are ", "barking", 1],
+			["My dog doesn't ", "bark", 1],
+			["Little children should ", "playing", 0],
+			["Your brother is ", "play", 0],
+			["Fred dropped two ", "books", 1],
+			["She took a ", "book", 1]
+		];
+		
+		/* list 2 for P600 trials */
+		var P6B = [
+			["The dogs are ", "bark", 0],
+			["My dog doesn't ", "barking", 0],
+			["Little children should ", "play", 1],
+			["Your brother is ", "playing", 1],
+			["Fred dropped two ", "book", 0],
+			["She took a ", "books", 0]
 		];
 	  
 		/* initialize jsPsych */
@@ -209,7 +229,27 @@
 		var sentence_stimuli = [];
 		
 		/* fill the sentence_stimuli array with randomized sentences */
-		for (let i = 0; i < N4.length; i++) { //N400
+		var N4 = Math.random() < 0.5 ? N4A : N4B;
+		var P6 = Math.random() < 0.5 ? P6A : P6B;
+		console.log(["using N4A?", N4 === N4A]);
+		console.log(["using P6A?", P6 === P6A]);
+		
+		for (let i = 0; i < N4.length; i++) {
+			sentence_stimuli.push({
+				stimulus: N4[i][0]+N4[i][1]+".",
+				normal: Boolean(N4[i][2]),
+				ERP_type: "N4"
+			});
+		}
+		for (let i = 0; i < P6.length; i++) {
+			sentence_stimuli.push({
+				stimulus: P6[i][0]+P6[i][1]+".",
+				normal: Boolean(P6[i][2]),
+				ERP_type: "P6"
+			});
+		}
+		
+/*		for (let i = 0; i < N4.length; i++) { //N400
 			let j = Math.floor(Math.random() * 2) + 1;
 			sentence_stimuli.push({
 				stimulus: N4[i][0]+N4[i][j]+".", 
@@ -223,6 +263,7 @@
 				normal: Boolean(j == 1),
 				ERP_type: "P6"});
 		}
+*/
 		
 		/* sentence display trial */
 		var sentence_trial = {
