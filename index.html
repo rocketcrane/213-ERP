@@ -11,86 +11,34 @@
 	<body></body>
 	<script>
 /*		var test = [
-			["The dogs are ", "barking", "bark"],
-			["My dog doesn't ", "bark", "barking"],
-
-			["Little children should ", "play", "playing"],
-			["Your brother is ", "playing", "play"],
-
-			["Fred dropped two ", "books", "book"],
-			["She took a ", "book", "books"],
-
-			["I purchased three ", "tickets", "ticket"],
-			["There remained one ", "ticket", "tickets"],
-
-			["Don't forget to ", "smile", "smiling"],
-			["The boys were ", "smiling", "smile"],
-
-			["Herbert listened while ", "running", "ran"],
-			["Sputtering, the engine ", "ran", "running"],
-
-			["Bakeries don't sell ", "vehicles", "vehicle"],
-			["That's an electric ", "vehicle", "vehicles"],
-
-			["There's an energy ", "shortage", "shortages"],
-			["Bookkeepers noticed supply ", "shortages", "shortage"],
-
-			["The miscreants had ", "loitered", "loitering"],
-			["This hotel forbade ", "loitering", "loitered"],
-
-			["They all brought ", "pencils", "pencil"],
-			["Sue borrowed a ", "pencil", "pencils"],
-
-			["My wife will ", "complain", "complains"]
-			["Jeffery's milkman never ", "complains", "complain"],
-
-			["Bipeds have two ", "legs", "leg"],
-			["I'll examine that ", "leg", "legs"],
-
-			["The burglar tiptoed ", "quietly", "quiet"],
-			["Cities are rarely ", "quiet", "quietly"],
-
-			["Dan ordered a ", "beer", "beers"],
-			["He downed four ", "beers", "beer"],
-
-			["It failed to ", "explode", "exploding"],
-			["Our sales are ", "exploding", "explode"],
-
-			["Nonconformists seemingly cannot ", "compromise", "compromised"],
-			["The swindler reluctantly ", "compromised", "compromise"],
-
-			["Online, reviews were ", "terrible", "terribly"],
-			["Ultimately, it aged ", "terribly", "terrible"],
-
-			["Organ donors must ", "volunteer", "volunteering"],
-			["Richard went out ", "volunteering", "volunteer"],
-
-			["The sprawl stretched ", "miles", "mile"],
-			["Beth ran a ", "mile", "miles"],
-
-			["Kimberly detected an ", "imbalance", "imbalanced"],
-			["Your messaging is ", "imbalanced", "imbalance"],
-
-			["Persuasive communication can ", "unite", "united"],
-			["The people were ", "united", "unite"],
-
-			["Bazaars have many ", "items", "item" ],
-			["It's a hot ", "item", "items"],
-
-			["The secretary is ", "typing", "typed"],
-			["The book was ", "typed", "typing"],
-
-			["Abbreviations typically help ", "simplify", "simplifying"],
-			["Refinement processes are ", "simplifying", "simplify"],
-
-			["Scholars often discuss ", "researching", "researches"],
-			["The autodidact also ", "researches", "researching"]
-			
-			
+["Jan ordered a ", "beer", "beers"],
+["He downed four ", "beers", "beer"],
+["It failed to ", "explode", "exploding"],
+["Our sales are ", "exploding", "explode"],
+["Nonconformists seemingly cannot ", "compromise", "compromised"],
+["The swindler reluctantly ", "compromised", "compromise"],
+["Online, reviews were ", "terrible", "terribly"],
+["Ultimately, it aged ", "terribly", "terrible"],
+["Organ donors must ", "volunteer", "volunteering"],
+["Richard went out ", "volunteering", "volunteer"],
+["The sprawl stretched ", "miles", "mile"],
+["Beth ran a ", "mile", "miles"],
+["Kimberly detected an ", "imbalance", "imbalanced"],
+["Your messaging is ", "imbalanced", "imbalance"],
+["Persuasive communication can ", "unite", "united"],
+["The people were ", "united", "unite"],
+["Bazaars have many ", "items", "item" ],
+["It's a hot ", "item", "items"],
+["The secretary is ", "typing", "typed"],
+["The book was ", "typed", "typing"],
+["Abbreviations typically help ", "simplify", "simplifying"],
+["Refinement processes are ", "simplifying", "simplify"],
+["Scholars often discuss ", "researching", "researches"],
+["The autodidact also ", "researches", "researching"]
 		];
 		for (let i = 0; i < test.length; i++) {
-			test[i][1] = test[i][2];
-			test[i][2] = 0;
+			//test[i][1] = test[i][2];
+			test[i][2] = 1;
 			console.log(test[i]);
 		}
 */
@@ -228,7 +176,37 @@
 			["The miscreants had ", "loitered", 1],
 			["This hotel forbade ", "loitering", 1],
 			["They all brought ", "pencil", 0],
-			["Sue borrowed a ", "pencils", 0]
+			["Sue borrowed a ", "pencils", 0],
+			["My wife will ", "complain", 1],
+			["Jeffery's milkman never ", "complains", 1],
+			["Bipeds have two ", "leg", 0],
+			["I'll examine that ", "legs", 0],
+			["The burglar tiptoed ", "quietly", 1],
+			["Cities are rarely ", "quiet", 1],
+			["Jan ordered a ", "beers", 0],
+			["He downed four ", "beer", 0],
+			["It failed to ", "explode", 1],
+			["Our sales are ", "exploding", 1],
+			["Nonconformists seemingly cannot ", "compromised", 0],
+			["The swindler reluctantly ", "compromise", 0],
+			["Online, reviews were ", "terrible", 1],
+			["Ultimately, it aged ", "terribly", 1],
+			["Organ donors must ", "volunteering", 0],
+			["Richard went out ", "volunteer", 0],
+			["The sprawl stretched ", "miles", 1],
+			["Beth ran a ", "mile", 1],
+			["Kimberly detected an ", "imbalanced", 0],
+			["Your messaging is ", "imbalance", 0],
+			["Persuasive communication can ", "unite", 1],
+			["The people were ", "united", 1],
+			["Bazaars have many ", "item", 0],
+			["It's a hot ", "items", 0],
+			["The secretary is ", "typing", 1],
+			["The book was ", "typed", 1],
+			["Abbreviations typically help ", "simplifying", 0],
+			["Refinement processes are ", "simplify", 0],
+			["Scholars often discuss ", "researching", 1],
+			["The autodidact also ", "researches", 1]
 		];
 		
 		/* list 2 for P600 trials */
@@ -252,7 +230,37 @@
 			["The miscreants had ", "loitering", 0],
 			["This hotel forbade ", "loitered", 0],
 			["They all brought ", "pencils", 1],
-			["Sue borrowed a ", "pencil", 1]
+			["Sue borrowed a ", "pencil", 1],
+			["My wife will ", "complains", 0],
+			["Jeffery's milkman never ", "complain", 0],
+			["Bipeds have two ", "legs", 1],
+			["I'll examine that ", "leg", 1],
+			["The burglar tiptoed ", "quiet", 0],
+			["Cities are rarely ", "quietly", 0],
+			["Jan ordered a ", "beer", 1],
+			["He downed four ", "beers", 1],
+			["It failed to ", "exploding", 0],
+			["Our sales are ", "explode", 0],
+			["Nonconformists seemingly cannot ", "compromise", 1],
+			["The swindler reluctantly ", "compromised", 1],
+			["Online, reviews were ", "terribly", 0],
+			["Ultimately, it aged ", "terrible", 0],
+			["Organ donors must ", "volunteer", 1],
+			["Richard went out ", "volunteering", 1],
+			["The sprawl stretched ", "mile", 0],
+			["Beth ran a ", "miles", 0],
+			["Kimberly detected an ", "imbalance", 1],
+			["Your messaging is ", "imbalanced", 1],
+			["Persuasive communication can ", "united", 0],
+			["The people were ", "unite", 0],
+			["Bazaars have many ", "items", 1],
+			["It's a hot ", "item", 1],
+			["The secretary is ", "typed", 0],
+			["The book was ", "typing", 0],
+			["Abbreviations typically help ", "simplify", 1],
+			["Refinement processes are ", "simplifying", 1],
+			["Scholars often discuss ", "researches", 0],
+			["The autodidact also ", "researching", 0]
 		];
 		
 		/* make sure both lists are same length */
@@ -289,7 +297,8 @@
 		};
 		
 		/* instructions */
-		var instructions = { type: jsPsychHtmlKeyboardResponse, stimulus: 
+		var instructions = { 
+			type: jsPsychHtmlKeyboardResponse, stimulus: 
 			`<div style="width:800px;">
 			<p>
 			Please look at the fixation cross in the middle of the screen when it appears.
@@ -306,7 +315,8 @@
 		};
 		
 		/* practice instructions */
-		var practice_ins = { type: jsPsychHtmlKeyboardResponse, stimulus: 
+		var practice_ins = { 
+			type: jsPsychHtmlKeyboardResponse, stimulus: 
 			`<div style="width:800px;">
 			<p>
 			Remember, you will see four-word sentences one word at a time, and your task is to determine whether the four-word sentence is "okay" or not.
@@ -332,7 +342,8 @@
 		var loop = false;
 		
 		/* practice loop instructions */
-		var practice_loop_ins = { type: jsPsychHtmlKeyboardResponse, stimulus: 
+		var practice_loop_ins = { 
+			type: jsPsychHtmlKeyboardResponse, stimulus: 
 			`<div style="width:800px;">
 			<p>
 			You answered one of the practice trials incorrectly. Let's try again!
@@ -360,7 +371,8 @@
 		}
 		
 		/* pre-trial instructions */
-		var trial_ins = { type: jsPsychHtmlKeyboardResponse, stimulus: 
+		var trial_ins = { 
+			type: jsPsychHtmlKeyboardResponse, stimulus: 
 			`<div style="width:600px;">
 			<p>
 			You will now begin the main experiment.
